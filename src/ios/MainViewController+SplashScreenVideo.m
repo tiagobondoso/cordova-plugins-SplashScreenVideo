@@ -18,9 +18,14 @@ bool shouldHideStatusBar = YES;
 }
 
 - (UIStatusBarStyle)preferredStatusBarStyle {
-    bool darkStatusBar = YES;
+    bool darkStatusBar;
     NSString *darkStatusBarStr = self.commandDelegate.settings[@"dark_statusbar"];
-    darkStatusBar = [darkStatusBarStr boolValue];
+    if (darkStatusBarStr == nil) {
+        darkStatusBar = YES;
+    } else {
+        darkStatusBar = [darkStatusBarStr boolValue];
+    }
+    
     if (darkStatusBar){
         return UIStatusBarStyleDarkContent;
     } else {
@@ -70,16 +75,7 @@ AVPlayerViewController *playerViewController;
 - (void)playVideo{
     NSString *fullpath = [[NSBundle mainBundle] pathForResource:@"SplashScreen" ofType:@"mp4"];
     NSURL *videoURL =[NSURL fileURLWithPath:fullpath];
-    NSLog(@"⭐️ Path: %@", fullpath);
     
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-
-    if ([fileManager fileExistsAtPath:fullpath]) {
-        NSLog(@"File exists");
-    } else {
-        NSLog(@"File does not exist");
-    }
-
     AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:videoURL];
     AVPlayer* playVideo = [[AVPlayer alloc] initWithPlayerItem:playerItem];
     self.playerViewController = [[AVPlayerViewController alloc] init];
