@@ -2,27 +2,29 @@
 
 #import <Cordova/CDV.h>
 
-@interface CDVSplashScreenVideo : CDVPlugin {
-  // Member variables go here.
-}
+@interface CDVSplashScreenVideo : CDVPlugin
 
-- (void)setCallback:(CDVInvokedUrlCommand*)command;
+@property (nonatomic, strong) NSString* callbackId;
+
 @end
+
 
 @implementation CDVSplashScreenVideo
 
 - (void)setCallback:(CDVInvokedUrlCommand*)command
 {
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
+    self.callbackId = command.callbackId;
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(videoDidFinish:)
+                                                 name:@"videoDidFinish"
+                                               object:nil];
 }
+
+- (void)videoDidFinish:(NSNotification *)notification
+{
+    CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
+}
+
 
 @end

@@ -17,6 +17,8 @@ bool shouldHideStatusBar = YES;
     return shouldHideStatusBar;
 }
 
+
+
 - (UIStatusBarStyle)preferredStatusBarStyle {
     bool darkStatusBar;
     NSString *darkStatusBarStr = self.commandDelegate.settings[@"dark_statusbar"];
@@ -70,12 +72,23 @@ AVPlayerViewController *playerViewController;
         shouldHideStatusBar = NO;
         [self setNeedsStatusBarAppearanceUpdate];
         });
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"videoDidFinish" object:nil];
+
 }
 
 - (void)playVideo{
     NSString *fullpath = [[NSBundle mainBundle] pathForResource:@"SplashScreen" ofType:@"mp4"];
     NSURL *videoURL =[NSURL fileURLWithPath:fullpath];
+    NSLog(@"⭐️ Path: %@", fullpath);
     
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+
+    if ([fileManager fileExistsAtPath:fullpath]) {
+        NSLog(@"File exists");
+    } else {
+        NSLog(@"File does not exist");
+    }
+
     AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:videoURL];
     AVPlayer* playVideo = [[AVPlayer alloc] initWithPlayerItem:playerItem];
     self.playerViewController = [[AVPlayerViewController alloc] init];
@@ -91,6 +104,20 @@ AVPlayerViewController *playerViewController;
     });
     [self.view addSubview:self.playerViewController.view];
     [playVideo play];
+}
+
+- (void)setCallback:(CDVInvokedUrlCommand*)command
+{
+    CDVPluginResult* pluginResult = nil;
+    NSString* echo = [command.arguments objectAtIndex:0];
+
+    if (echo != nil && [echo length] > 0) {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
+    } else {
+        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
+    }
+
+    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 
