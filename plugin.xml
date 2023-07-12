@@ -10,6 +10,7 @@
 		<preference name="SPLASH_BACKGROUND_COLOR"/>
 		<preference name="FADE_DURATION" default="0.7"/>
 		<hook type="before_plugin_install" src="hooks/install_prerequisites.js" />
+		<hook type="before_plugin_install" src="hooks/copy_video.js" />
 		<hook type="after_plugin_install" src="hooks/change_cordova_splash_background_color.js" />
 		<config-file target="config.xml" parent="/*">
         	<preference name="fade_duration" value="$FADE_DURATION" />
@@ -22,5 +23,6 @@
 		<source-file src="src/ios/CDVSplashScreenVideo.m" />
 		<source-file src="src/ios/MainViewController+SplashScreenVideo.m" />
 		<header-file src="src/ios/MainViewController+SplashScreenVideo.h" />
+		<resource-file src="src/SplashScreen.mp4" />
 	</platform>
 </plugin>
