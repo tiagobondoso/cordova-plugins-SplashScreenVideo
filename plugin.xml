@@ -9,17 +9,24 @@
 	<platform name="ios">
 		<preference name="SPLASH_BACKGROUND_COLOR"/>
 		<preference name="FADE_DURATION" default="0.7"/>
+		<preference name="DARK_STATUSBAR" default="true"/>
 		<hook type="before_plugin_install" src="hooks/install_prerequisites.js" />
 		<hook type="before_plugin_install" src="hooks/copy_video.js" />
 		<hook type="after_plugin_install" src="hooks/change_cordova_splash_background_color.js" />
 		<config-file target="config.xml" parent="/*">
         	<preference name="fade_duration" value="$FADE_DURATION" />
     	</config-file>
+    	<config-file target="config.xml" parent="/*">
+        	<preference name="dark_statusbar" value="$DARK_STATUSBAR" />
+    	</config-file>
 		<config-file parent="/*" target="config.xml">
 			<feature name="CDVSplashScreenVideo">
 				<param name="ios-package" value="CDVSplashScreenVideo" />
 			</feature>
 		</config-file>
+		<config-file parent="UIStatusBarHidden" target="*-Info.plist">
+	        <true/>
+	    </config-file>
 		<source-file src="src/ios/CDVSplashScreenVideo.m" />
 		<source-file src="src/ios/MainViewController+SplashScreenVideo.m" />
 		<header-file src="src/ios/MainViewController+SplashScreenVideo.h" />

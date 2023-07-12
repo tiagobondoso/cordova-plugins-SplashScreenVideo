@@ -11,6 +11,23 @@ static char PlayerViewControllerKey;
 
 @implementation MainViewController (CDVSplashScreenVideo)
 
+bool shouldHideStatusBar = YES;
+
+- (BOOL)prefersStatusBarHidden {
+    return shouldHideStatusBar;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    bool darkStatusBar = YES;
+    NSString *darkStatusBarStr = self.commandDelegate.settings[@"dark_statusbar"];
+    darkStatusBar = [darkStatusBarStr boolValue];
+    if (darkStatusBar){
+        return UIStatusBarStyleDarkContent;
+    } else {
+        return UIStatusBarStyleLightContent;
+    }
+}
+
 - (void)setPlayerViewController:(AVPlayerViewController *)playerViewController
 {
     objc_setAssociatedObject(self, &PlayerViewControllerKey, playerViewController, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
@@ -45,6 +62,8 @@ AVPlayerViewController *playerViewController;
                 [self.playerViewController.view removeFromSuperview];
                 self.playerViewController = nil;
             }];
+        shouldHideStatusBar = NO;
+        [self setNeedsStatusBarAppearanceUpdate];
         });
 }
 
