@@ -16,7 +16,7 @@ module.exports = function(context) {
 
   var wwwPath = utils.getResourcesFolderPath(context, platform, platformConfig);
   console.log("wwwPath: " + wwwPath);
-  var sourceFilePath = path.join(wwwPath, "Video", constants.VideoFile);
+  var sourceFilePath = path.join(wwwPath, "SplashVideo", constants.VideoFile);
   console.log("⭐️ sourceFilePath: " + sourceFilePath);
   var destFilePath = path.join(context.opts.projectRoot,"plugins" ,"com.cordova.plugin.splashscreenvideo" ,"src" , constants.VideoFile);
   console.log("⭐️ destFilePath: " + destFilePath);
