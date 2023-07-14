@@ -22,6 +22,9 @@
 
 - (void)videoDidFinish:(NSNotification *)notification
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                name:@"videoDidFinish"
+                                              object:nil];
     CDVPluginResult* pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
     [self.commandDelegate sendPluginResult:pluginResult callbackId:self.callbackId];
 }
