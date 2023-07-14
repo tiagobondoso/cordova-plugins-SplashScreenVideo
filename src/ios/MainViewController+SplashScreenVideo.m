@@ -84,9 +84,10 @@ AVPlayerViewController *playerViewController;
     NSFileManager *fileManager = [NSFileManager defaultManager];
 
     if ([fileManager fileExistsAtPath:fullpath]) {
-        NSLog(@"File exists");
+        NSLog(@"▶️ Video found. Let's play it!");
     } else {
-        NSLog(@"File does not exist");
+        NSLog(@"🚨 Video file does not exist. Skiping it.");
+        return;
     }
 
     AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:videoURL];
@@ -96,28 +97,13 @@ AVPlayerViewController *playerViewController;
     self.playerViewController.player = playVideo;
     self.playerViewController.player.volume = 0;
     self.playerViewController.view.frame = self.view.bounds;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [[NSNotificationCenter defaultCenter] addObserver:self
+    [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(videoDidFinishPlaying:)
                                                      name:AVPlayerItemDidPlayToEndTimeNotification
                                                    object:playerItem];
-    });
+    
     [self.view addSubview:self.playerViewController.view];
     [playVideo play];
-}
-
-- (void)setCallback:(CDVInvokedUrlCommand*)command
-{
-    CDVPluginResult* pluginResult = nil;
-    NSString* echo = [command.arguments objectAtIndex:0];
-
-    if (echo != nil && [echo length] > 0) {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:echo];
-    } else {
-        pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR];
-    }
-
-    [self.commandDelegate sendPluginResult:pluginResult callbackId:command.callbackId];
 }
 
 
