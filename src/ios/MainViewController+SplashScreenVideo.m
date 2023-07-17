@@ -137,4 +137,20 @@ AVPlayerViewController *playerViewController;
     [playVideo play];
 }
 
+- (void)handleAppStateChanged:(NSNotification *)notification
+{
+    if ([notification.name isEqualToString:UIApplicationWillResignActiveNotification] ||
+        [notification.name isEqualToString:UIApplicationProtectedDataWillBecomeUnavailable]) {
+        if (self.playerViewController.player.rate != 0) {
+            [self.playerViewController.player pause];
+        }
+    } else if ([notification.name isEqualToString:UIApplicationDidBecomeActiveNotification] ||
+               [notification.name isEqualToString:UIApplicationProtectedDataDidBecomeAvailable] ||
+               [notification.name isEqualToString:UIApplicationWillEnterForegroundNotification]) {
+        if (self.playerViewController.player.rate == 0) {
+            [self.playerViewController.player play];
+        }
+    }
+}
+
 @end
