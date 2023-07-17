@@ -61,9 +61,10 @@ module.exports = function(context) {
         }
         let rgbColor = hexToDecimalRGB(hexColor);
 
-        var result = data;
+        var result;
         result = data.replace(/<color key=\"backgroundColor\" name=\"BackgroundColor\"\/>/g, '<color key="backgroundColor" red="' + rgbColor.red + '" green="' + rgbColor.green + '" blue="' + rgbColor.blue + '" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>');
-        
+        result = result.replace(/<imageView/g, '<imageView alpha="0"');
+
         fs.writeFile(CDVLaunchScreen, result, 'utf8', function (err) {
           if (err) 
             {throw new Error('🚨 Unable to write into CDVLaunchScreen.storyboard: ' + err);}
