@@ -92,6 +92,7 @@ AVPlayerViewController *playerViewController;
 
     AVPlayerItem* playerItem = [AVPlayerItem playerItemWithURL:videoURL];
     AVPlayer* playVideo = [[AVPlayer alloc] initWithPlayerItem:playerItem];
+    playVideo.allowsExternalPlayback = NO;
     self.playerViewController = [[AVPlayerViewController alloc] init];
     self.playerViewController.showsPlaybackControls = false;
     self.playerViewController.player = playVideo;
