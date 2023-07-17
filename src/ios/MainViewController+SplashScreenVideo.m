@@ -17,8 +17,6 @@ bool shouldHideStatusBar = YES;
     return shouldHideStatusBar;
 }
 
-
-
 - (UIStatusBarStyle)preferredStatusBarStyle {
     bool darkStatusBar;
     NSString *darkStatusBarStr = self.commandDelegate.settings[@"dark_statusbar"];
@@ -57,10 +55,13 @@ AVPlayerViewController *playerViewController;
     NSString *fadeDurationStr = self.commandDelegate.settings[@"fade_duration"];
     double fadeDuration = [fadeDurationStr doubleValue];
     
-    [[NSNotificationCenter defaultCenter] removeObserver:self
-                                                    name:AVPlayerItemDidPlayToEndTimeNotification
-                                                  object:nil];
-    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillResignActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidBecomeActiveNotification object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationProtectedDataWillBecomeUnavailable object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationProtectedDataDidBecomeAvailable object:nil];
+
     dispatch_async(dispatch_get_main_queue(), ^{
             [UIView animateWithDuration:fadeDuration animations:^{
                 self.playerViewController.view.alpha = 0.0;
@@ -73,7 +74,6 @@ AVPlayerViewController *playerViewController;
         [self setNeedsStatusBarAppearanceUpdate];
         });
     [[NSNotificationCenter defaultCenter] postNotificationName:@"videoDidFinish" object:nil];
-
 }
 
 - (void)playVideo{
@@ -98,6 +98,36 @@ AVPlayerViewController *playerViewController;
     self.playerViewController.player.volume = 0;
     self.playerViewController.view.frame = self.view.bounds;
     self.playerViewController.videoGravity = AVLayerVideoGravityResizeAspectFill;
+    
+    //Notification when the app becomes active again
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppStateChanged:)
+                                                 name:UIApplicationWillResignActiveNotification
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppStateChanged:)
+                                                 name:UIApplicationDidBecomeActiveNotification
+                                               object:nil];
+    
+    //Notification when the phone is unlocked
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppStateChanged:)
+                                                 name:UIApplicationProtectedDataWillBecomeUnavailable
+                                               object:nil];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppStateChanged:)
+                                                 name:UIApplicationProtectedDataDidBecomeAvailable
+                                               object:nil];
+
+    //Notification when the app comes back to foreground
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleAppStateChanged:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
+
+    //Notification when the video finishes playing
     [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(videoDidFinishPlaying:)
                                                      name:AVPlayerItemDidPlayToEndTimeNotification
@@ -106,6 +136,5 @@ AVPlayerViewController *playerViewController;
     [self.view addSubview:self.playerViewController.view];
     [playVideo play];
 }
-
 
 @end
