@@ -8,8 +8,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
-import com.outsystems.experts.benfica.R;
-import com.outsystems.experts.benfica.MainActivity;
+import APP_ID_PLACEHOLDER.R;
+import APP_ID_PLACEHOLDER.MainActivity;
 import android.os.Build;
 
 public class CDVSplashScreenVideo extends AppCompatActivity {
