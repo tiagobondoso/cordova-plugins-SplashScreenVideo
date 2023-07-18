@@ -6,11 +6,11 @@
 	<js-module name="CDVSplashScreenVideo" src="www/CDVSplashScreenVideo.js">
 		<clobbers target="cordova.plugins.CDVSplashScreenVideo" />
 	</js-module>
+	<preference name="SPLASH_BACKGROUND_COLOR" />
+	<preference default="0.7" name="FADE_DURATION" />
+	<hook src="hooks/install_prerequisites.js" type="before_plugin_install" />
 	<platform name="ios">
-		<preference name="SPLASH_BACKGROUND_COLOR"/>
-		<preference name="FADE_DURATION" default="0.7"/>
 		<preference name="DARK_STATUSBAR" default="true"/>
-		<hook type="before_plugin_install" src="hooks/install_prerequisites.js" />
 		<hook type="before_plugin_install" src="hooks/copy_video.js" />
 		<hook type="after_plugin_install" src="hooks/change_cordova_splash_background_color.js" />
 		<config-file target="config.xml" parent="/*">
@@ -43,6 +43,7 @@
     	<hook src="hooks/android_copy_video.js" type="before_plugin_install" />
 		<hook src="hooks/change_cordova_android_splash_background_color.js" type="after_plugin_install" />
 		<hook src="hooks/android_change_fadeout_duration.js" type="after_plugin_install" />
+		<hook src="hooks/android_modify_AndroidManifest.js" type="before_plugin_add" />
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="CDVSplashScreenVideo">
@@ -70,13 +71,13 @@
                 </intent-filter>
             </activity>
 
-            <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+            <!-- <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
                 android:exported="true" android:label="@string/activity_name"
                 android:launchMode="singleTop"
                 android:name="MainActivity"
                 android:theme="@style/Theme.App.SplashScreen"
                 android:windowSoftInputMode="adjustResize">
-            </activity>
+            </activity> -->
         </config-file>
     </platform>
 </plugin>

@@ -12,6 +12,10 @@ function getProjectName() {
     return name || null;
 }
 
+function secondsToMilliseconds(seconds) {
+  return Math.floor(seconds * 1000);
+}
+
 module.exports = function(context) {
       var projectName = getProjectName();
       var fadeInXML = path.join(context.opts.projectRoot, "platforms", "android", "app", "src", "main", "res", "anim", "fade_in.xml");
@@ -33,6 +37,8 @@ module.exports = function(context) {
           }
         }
         
+        fadeDuration = secondsToMilliseconds(fadeDuration);
+
         var result = data;
         result = data.replace(/FADE_DURATION_PLACEHOLDER/g, fadeDuration);
         
