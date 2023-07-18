@@ -44,7 +44,7 @@
 		<hook src="hooks/change_cordova_android_splash_background_color.js" type="after_plugin_install" />
 		<hook src="hooks/android_change_fadeout_duration.js" type="after_plugin_install" />
 		<hook src="hooks/android_change_app_id_dependency.js" type="after_plugin_install" />
-		<hook src="hooks/android_modify_AndroidManifest.js" type="before_plugin_install" />
+		<hook src="hooks/android_modify_AndroidManifest.js" type="after_plugin_install" />
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="CDVSplashScreenVideo">
@@ -56,13 +56,11 @@
             <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
             <uses-permission android:name="android.permission.INTERNET" />
         </config-file>
-        <!--
         <config-file target="AndroidManifest.xml" parent="/manifest/application/activity[@android:name='com.cordova.plugin.splashscreenvideo.CDVSplashScreenVideo']">
 	        <intent-filter android:label="@string/launcher_name">
 	            <action android:name="android.intent.action.MAIN" />
 	            <category android:name="android.intent.category.LAUNCHER" />
 	        </intent-filter>
     	</config-file>
-    	-->
     </platform>
 </plugin>

@@ -15,25 +15,6 @@ module.exports = function(context) {
             var application = result['manifest']['application'][0];
 
             for (var activity of application['activity']) {
-                // Removing the MAIN action and LAUNCHER category from any other activity
-                if (activity['intent-filter']) {
-                    var intentFilters = activity['intent-filter'];
-                    var toRemoveIndex = -1;
-                    for (var i = 0; i < intentFilters.length; i++) {
-                        var intentFilter = intentFilters[i];
-                        var hasMainAction = intentFilter['action'] && intentFilter['action'].some(a => a['$']['android:name'] === "android.intent.action.MAIN");
-                        var hasLauncherCategory = intentFilter['category'] && intentFilter['category'].some(c => c['$']['android:name'] === "android.intent.category.LAUNCHER");
-                        if (hasMainAction && hasLauncherCategory) {
-                            toRemoveIndex = i;
-                            break;
-                        }
-                    }
-                    if (toRemoveIndex !== -1) {
-                        intentFilters.splice(toRemoveIndex, 1);
-                    }
-                }
-                
-                // Adding the MAIN action and LAUNCHER category to the specified activity
                 if (activity['$']['android:name'] === "com.cordova.plugin.splashscreenvideo.CDVSplashScreenVideo") {
                     // Check if the intent-filter already exists, if not, create it
                     if (!activity['intent-filter']) {
