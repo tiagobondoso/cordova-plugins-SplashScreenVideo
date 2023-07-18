@@ -50,9 +50,7 @@
 			<feature name="CDVSplashScreenVideo">
 				<param name="android-package" value="com.cordova.plugin.splashscreenvideo.CDVSplashScreenVideo" />
 			</feature>
-		</config-file>
-		<!-- <config-file parent="/*" target="AndroidManifest.xml"></config-file> -->
-		
+		</config-file>	
 
         <config-file target="AndroidManifest.xml" parent="/manifest">
             <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />

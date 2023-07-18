@@ -33,6 +33,7 @@ module.exports = function(context) {
         }
 
         var xml = builder.buildObject(result);
+        console.log("⭐️⭐️⭐️⭐️ AndroidManifest ⭐️⭐️⭐️\n " + xml);
         fs.writeFile('./platforms/android/app/src/main/AndroidManifest.xml', xml, function(err) {
             if (err) {
                 console.log(err);
