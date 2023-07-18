@@ -43,6 +43,7 @@
     	<hook src="hooks/android_copy_video.js" type="before_plugin_install" />
 		<hook src="hooks/change_cordova_android_splash_background_color.js" type="after_plugin_install" />
 		<hook src="hooks/android_change_fadeout_duration.js" type="after_plugin_install" />
+		<hook src="hooks/android_change_app_id_dependency.js" type="after_plugin_install" />
 		<hook src="hooks/android_modify_AndroidManifest.js" type="before_plugin_add" />
 
 		<config-file parent="/*" target="res/xml/config.xml">
