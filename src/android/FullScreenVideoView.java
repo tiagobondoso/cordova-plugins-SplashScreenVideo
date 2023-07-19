@@ -1,37 +1,65 @@
-package com.cordova.plugin.splashscreenvideo;
-
 import android.content.Context;
-import android.util.AttributeSet;
-import android.widget.VideoView;
+import android.media.MediaPlayer;
+import android.net.Uri;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 
-public class FullScreenVideoView extends VideoView {
+import java.io.IOException;
 
-    public FullScreenVideoView(Context context) {
+public class FullScreenVideoView extends SurfaceView implements SurfaceHolder.Callback {
+
+    private MediaPlayer mediaPlayer;
+    private Uri videoUri;
+
+    public FullScreenVideoView(Context context, Uri videoUri) {
         super(context);
-    }
+        this.videoUri = videoUri;
 
-    public FullScreenVideoView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setLooping(true);
 
-    public FullScreenVideoView(Context context, AttributeSet attrs, int defStyle) {
-        super(context, attrs, defStyle);
+        getHolder().addCallback(this);
     }
 
     @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        int height = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        if (width > 0) {
-            int widthWithoutPadding = width - getPaddingLeft() - getPaddingRight();
-            int heightWithoutPadding = height - getPaddingTop() - getPaddingBottom();
+    public void surfaceCreated(SurfaceHolder holder) {
+        mediaPlayer.setDisplay(holder);
 
-            if (widthWithoutPadding > heightWithoutPadding) {
-                width = heightWithoutPadding;
-            } else {
-                height = widthWithoutPadding;
-            }
+        try {
+            mediaPlayer.setDataSource(getContext(), videoUri);
+            mediaPlayer.prepare();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
-        setMeasuredDimension(width, height);
+
+        int videoWidth = mediaPlayer.getVideoWidth();
+        int videoHeight = mediaPlayer.getVideoHeight();
+        float videoRatio = (float) videoWidth / (float) videoHeight;
+
+        int screenWidth = getWidth();
+        int screenHeight = getHeight();
+        float screenRatio = (float) screenWidth / (float) screenHeight;
+
+        float scaleX = videoRatio / screenRatio;
+
+        if (scaleX >= 1f) {
+            scaleY = 1f / scaleX;
+        } else {
+            scaleX = 1f;
+        }
+
+        setScaleX(scaleX);
+        setScaleY(scaleY);
+
+        mediaPlayer.start();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        mediaPlayer.release();
     }
 }
