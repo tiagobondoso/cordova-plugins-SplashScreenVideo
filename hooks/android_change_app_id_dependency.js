@@ -13,7 +13,7 @@ function getProjectId() {
 
 module.exports = function(context) {
       var projectId = getProjectId();   
-      var javaFile = path.join(context.opts.projectRoot, "platforms", "android", "app", "src", "main", "java", "com", "cordova", "plugin", "splashscreenvideo", "CDVSplashScreenVideo", "CDVSplashScreenVideo.java");
+      var javaFile = path.join(context.opts.projectRoot, "platforms", "android", "app", "src", "main", "java", "com", "cordova", "plugin", "splashscreenvideo", "CDVSplashScreenVideo.java");
     console.log("✅ javaFile: " + javaFile);    
     if (fs.existsSync(javaFile)) {
      
