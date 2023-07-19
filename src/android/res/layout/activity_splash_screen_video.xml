@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <VideoView
+    <com.cordova.plugin.splashscreenvideo.FullScreenVideoView
         android:id="@+id/videoView"
         android:orientation="vertical"
         android:layout_width="match_parent"

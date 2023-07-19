@@ -18,14 +18,14 @@ function secondsToMilliseconds(seconds) {
 
 module.exports = function(context) {
       var projectName = getProjectName();
-      var fadeInXML = path.join(context.opts.projectRoot, "platforms", "android", "app", "src", "main", "res", "anim", "fade_in.xml");
-    console.log("✅ fadeInXML: " + fadeInXML);    
-    if (fs.existsSync(fadeInXML)) {
+      var fadeOutXML = path.join(context.opts.projectRoot, "platforms", "android", "app", "src", "main", "res", "anim", "fade_out.xml");
+    console.log("✅ fadeOutXML: " + fadeOutXML);    
+    if (fs.existsSync(fadeOutXML)) {
      
-      fs.readFile(fadeInXML, 'utf8', function (err,data) {
+      fs.readFile(fadeOutXML, 'utf8', function (err,data) {
         
         if (err) {
-          throw new Error('🚨 Unable to read fade_in.xml: ' + err);
+          throw new Error('🚨 Unable to read fade_out.xml: ' + err);
         }
         
         const args = process.argv
@@ -42,14 +42,14 @@ module.exports = function(context) {
         var result = data;
         result = data.replace(/FADE_DURATION_PLACEHOLDER/g, fadeDuration);
         
-        fs.writeFile(fadeInXML, result, 'utf8', function (err) {
+        fs.writeFile(fadeOutXML, result, 'utf8', function (err) {
           if (err) 
-            {throw new Error('🚨 Unable to write into fade_in.xml: ' + err);}
+            {throw new Error('🚨 Unable to write into fade_out.xml: ' + err);}
           else 
-            {console.log("✅ fade_in.xml edited successfuly");}
+            {console.log("✅ fade_out.xml edited successfuly");}
         });
       });
     } else {
-        throw new Error("🚨 WARNING: fade_in.xml was not found. The build phase may not finish successfuly");
+        throw new Error("🚨 WARNING: fade_out.xml was not found. The build phase may not finish successfuly");
     }
   }

@@ -14,7 +14,7 @@ import android.os.Build;
 
 public class CDVSplashScreenVideo extends AppCompatActivity {
 
-    VideoView videoView;
+    FullScreenVideoView videoView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +24,13 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash_screen_video);
 
-        videoView = (VideoView)findViewById(R.id.videoView);
+        videoView = (FullScreenVideoView)findViewById(R.id.videoView);
 
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splashscreen);
         videoView.setVideoURI(video);
 
         videoView.setOnCompletionListener(mp -> {
-            startMainActivity();
+            showMainActivity();
         });
 
         videoView.start();
@@ -53,11 +53,12 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
         }
     }
 
-    private void startMainActivity() {
+    private void showMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear all activities on top of MainActivity
         startActivity(intent);
-        overridePendingTransition(R.anim.fade_in, R.anim.no_anim);
-        finish();
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out); // Apply fade transition
+        finish(); // Finish the CDVSplashScreenVideo activity
     }
 
 }
