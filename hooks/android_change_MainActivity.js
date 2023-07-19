@@ -6,10 +6,7 @@ const xml2js = require('xml2js');
 const parser = new xml2js.Parser();
 
 module.exports = function(context) {
-    if (context.opts.platforms.indexOf('android') < 0) {
-        return;
-    }
-
+    
     const configPath = path.join(context.opts.projectRoot, 'config.xml');
 
     fs.readFile(configPath, 'utf8', function(err, data) {
