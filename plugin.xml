@@ -6,11 +6,11 @@
 	<js-module name="CDVSplashScreenVideo" src="www/CDVSplashScreenVideo.js">
 		<clobbers target="cordova.plugins.CDVSplashScreenVideo" />
 	</js-module>
+	<preference name="SPLASH_BACKGROUND_COLOR" />
+	<preference default="0.7" name="FADE_DURATION" />
+	<hook src="hooks/install_prerequisites.js" type="before_plugin_install" />
 	<platform name="ios">
-		<preference name="SPLASH_BACKGROUND_COLOR"/>
-		<preference name="FADE_DURATION" default="0.7"/>
 		<preference name="DARK_STATUSBAR" default="true"/>
-		<hook type="before_plugin_install" src="hooks/install_prerequisites.js" />
 		<hook type="before_plugin_install" src="hooks/copy_video.js" />
 		<hook type="after_plugin_install" src="hooks/change_cordova_splash_background_color.js" />
 		<config-file target="config.xml" parent="/*">
@@ -32,4 +32,52 @@
 		<header-file src="src/ios/MainViewController+SplashScreenVideo.h" />
 		<resource-file src="src/SplashScreen.mp4" />
 	</platform>
+	<platform name="android"> 
+		<resource-file src="src/splashscreen.mp4" target="res/raw/splashscreen.mp4" />
+		<resource-file src="src/android/res/anim/fade_out.xml" target="res/anim/fade_out.xml" />
+    	<resource-file src="src/android/res/anim/no_anim.xml" target="res/anim/no_anim.xml" />
+    	<resource-file src="src/android/res/layout/activity_splash_screen_video.xml" target="res/layout/activity_splash_screen_video.xml" />
+    	<resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml" />
+    	<source-file src="src/android/CDVSplashScreenVideo.java" target-dir="src/com/cordova/plugin/splashscreenvideo" />
+    	<source-file src="src/android/FullScreenVideoView.java" target-dir="src/com/cordova/plugin/splashscreenvideo" />
+
+    	<hook src="hooks/android_copy_video.js" type="before_plugin_install" />
+		<hook src="hooks/change_cordova_android_splash_background_color.js" type="after_plugin_install" />
+		<hook src="hooks/android_change_fadeout_duration.js" type="after_plugin_install" />
+		<hook src="hooks/android_change_app_id_dependency.js" type="after_plugin_install" />
+		<hook src="hooks/android_change_MainActivity.js" type="after_plugin_install" />
+
+		<config-file parent="/*" target="res/xml/config.xml">
+			<feature name="CDVSplashScreenVideo">
+				<param name="android-package" value="com.cordova.plugin.splashscreenvideo" />
+			</feature>
+		</config-file>	
+
+        <config-file target="AndroidManifest.xml" parent="/manifest">
+            <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
+            <uses-permission android:name="android.permission.INTERNET" />
+        </config-file>
+
+        <config-file target="AndroidManifest.xml" parent="/manifest/application">
+            <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+                android:exported="true" android:label="@string/activity_name"
+                android:launchMode="singleTop"
+                android:name="com.cordova.plugin.splashscreenvideo.CDVSplashScreenVideo"
+                android:theme="@style/AppTheme"
+                android:windowSoftInputMode="adjustResize">
+                <!--<intent-filter android:label="@string/launcher_name">
+                    <action android:name="android.intent.action.MAIN" />
+                    <category android:name="android.intent.category.LAUNCHER" />
+                </intent-filter> -->
+            </activity>
+
+            <!-- <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode"
+                android:exported="true" android:label="@string/activity_name"
+                android:launchMode="singleTop"
+                android:name="MainActivity"
+                android:theme="@style/Theme.App.SplashScreen"
+                android:windowSoftInputMode="adjustResize">
+            </activity> -->
+        </config-file>
+    </platform>
 </plugin>
