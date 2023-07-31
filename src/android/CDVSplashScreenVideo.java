@@ -37,9 +37,6 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
         player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
 
-        MediaItem mediaItem = MediaItem.fromUri(PATH_RESOURCE + getPackageName() + DELIMITER + R.raw.splashscreen);
-        player.setMediaItem(mediaItem);
-
         try {
             MediaItem mediaItem = MediaItem.fromUri(PATH_RESOURCE + getPackageName() + DELIMITER + R.raw.splashscreen);
             player.setMediaItem(mediaItem);
