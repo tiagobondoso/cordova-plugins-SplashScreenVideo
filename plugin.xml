@@ -38,7 +38,7 @@
 	<!-- Android Section -->
 	<platform name="android"> 
 		<resource-file src="src/splashscreen.mp4" target="res/raw/splashscreen.mp4" />
-		<resource-file src="src/android/res/anim/fade_out.xml" target="res/anim/fade_out.xml" />
+		<resource-file src="src/android/res/anim/fade_out_splash.xml" target="res/anim/fade_out_splash.xml" />
     	<resource-file src="src/android/res/anim/no_anim.xml" target="res/anim/no_anim.xml" />
     	<resource-file src="src/android/res/layout/activity_splash_screen_video.xml" target="res/layout/activity_splash_screen_video.xml" />
     	<resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml" />
