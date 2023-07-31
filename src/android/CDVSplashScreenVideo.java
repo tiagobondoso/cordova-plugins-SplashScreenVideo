@@ -20,6 +20,8 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
 
     private PlayerView playerView;
     private SimpleExoPlayer player;
+    private String PATH_RESOURCE = "android.resource://";
+    private String DELIMITER = "/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +37,7 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
         player = new SimpleExoPlayer.Builder(this).build();
         playerView.setPlayer(player);
 
-        MediaItem mediaItem = MediaItem.fromUri("android.resource://" + getPackageName() + "/" + R.raw.splashscreen);
+        MediaItem mediaItem = MediaItem.fromUri(PATH_RESOURCE + getPackageName() + DELIMITER + R.raw.splashscreen);
         player.setMediaItem(mediaItem);
 
         player.addListener(new Player.Listener() {
