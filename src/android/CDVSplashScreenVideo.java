@@ -40,17 +40,25 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
         MediaItem mediaItem = MediaItem.fromUri(PATH_RESOURCE + getPackageName() + DELIMITER + R.raw.splashscreen);
         player.setMediaItem(mediaItem);
 
-        player.addListener(new Player.Listener() {
-            @Override
-            public void onPlaybackStateChanged(int state) {
-                if (state == ExoPlayer.STATE_ENDED) {
-                    showMainActivity();
-                }
-            }
-        });
+        try {
+            MediaItem mediaItem = MediaItem.fromUri(PATH_RESOURCE + getPackageName() + DELIMITER + R.raw.splashscreen);
+            player.setMediaItem(mediaItem);
 
-        player.prepare();
-        player.play();
+            player.addListener(new Player.Listener() {
+                @Override
+                public void onPlaybackStateChanged(int state) {
+                    if (state == ExoPlayer.STATE_ENDED) {
+                        showMainActivity();
+                    }
+                }
+            });
+
+            player.prepare();
+            player.play();
+        } catch (Exception ex) {
+            // If video doesn't exist or something, then go though
+            showMainActivity();
+        }
     }
 
     @Override
