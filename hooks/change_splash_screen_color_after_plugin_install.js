@@ -2,49 +2,16 @@
 
 const fs = require('fs');
 const path = require('path');
-const xml2js = require('xml2js');
 
-const colorsXmlPath = path.join('platforms', 'android', 'app', 'src', 'main', 'res', 'values', 'colors.xml');
+const themesXmlPath = path.join('platforms', 'android', 'app', 'src', 'main', 'res', 'values', 'themes.xml');
 
-const newSplashScreenColor = '#FF0000'; // Substitua aqui pela nova cor de fundo desejada
-
-// Função para converter o arquivo XML em objeto JavaScript
-function parseXmlFile(filePath, callback) {
-  fs.readFile(filePath, 'utf8', function (err, data) {
+// Função para buscar e substituir a cor no arquivo themes.xml
+function changeSplashScreenColor() {
+  fs.readFile(themesXmlPath, 'utf8', (err, data) => {
     if (err) {
-      console.error('Error reading colors.xml:', err);
+      console.error('Error reading themes.xml:', err);
       return;
     }
-    const parser = new xml2js.Parser();
-    parser.parseString(data, callback);
-  });
-}
-
-// Função para converter o objeto JavaScript em arquivo XML
-function buildXmlFile(filePath, data, callback) {
-  const builder = new xml2js.Builder();
-  const xml = builder.buildObject(data);
-  fs.writeFile(filePath, xml, callback);
-}
-
-// Função para modificar a cor da chave cdv_splashscreen_background no objeto JavaScript
-function changeSplashScreenColor(data, newColor) {
-  if (data.resources && data.resources.color) {
-    const splashScreenColor = data.resources.color.find(color => color.$.name === 'cdv_splashscreen_background');
-    if (splashScreenColor) {
-      splashScreenColor._ = newColor;
-    } else {
-      data.resources.color.push({ _: newColor, $: { name: 'cdv_splashscreen_background' } });
-    }
-  }
-}
-
-// Alterar o arquivo colors.xml com a nova cor de fundo
-parseXmlFile(colorsXmlPath, function (err, data) {
-  if (err) {
-    console.error('Error parsing colors.xml:', err);
-    return;
-  }
 
     const args = process.argv
     var hexColor;
@@ -58,13 +25,19 @@ parseXmlFile(colorsXmlPath, function (err, data) {
 
    console.log(`✅ New hex color :: '${hexColor}' in 'colors.xml'.`);
 
-  changeSplashScreenColor(data, hexColor);
+    const regex = /<item name="windowSplashScreenBackground">@color\/cdv_splashscreen_background<\/item>/g;
+    const newContent = data.replace(regex, `<item name="windowSplashScreenBackground">${hexColor}</item>`);
 
-  buildXmlFile(colorsXmlPath, data, function (err) {
-    if (err) {
-      console.error('Error writing colors.xml:', err);
-      return;
-    }
-    console.log(`Splash screen background color has been changed to '${hexColor}' in 'colors.xml'.`);
+    fs.writeFile(themesXmlPath, newContent, 'utf8', (err) => {
+      if (err) {
+        console.error('Error writing to themes.xml:', err);
+        return;
+      }
+
+      console.log(`Splash screen background color has been changed to '${hexColor}' in 'themes.xml'.`);
+    });
   });
-});
+}
+
+// Chamar a função para alterar a cor
+changeSplashScreenColor();
