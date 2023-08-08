@@ -38,19 +38,14 @@
 	<!-- Android Section -->
 	<platform name="android"> 
 		<resource-file src="src/splashscreen.mp4" target="res/raw/splashscreen.mp4" />
-		<resource-file src="src/android/res/anim/fade_out_splash.xml" target="res/anim/fade_out_splash.xml" />
-    	<resource-file src="src/android/res/anim/no_anim.xml" target="res/anim/no_anim.xml" />
     	<resource-file src="src/android/res/layout/activity_splash_screen_video.xml" target="res/layout/activity_splash_screen_video.xml" />
     	<resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml" />
     	<source-file src="src/android/VideoDialogFragment.java" target-dir="src/com/cordova/plugin/splashscreenvideo" />
 		<framework src="src/android/splashvideo.gradle" custom="true" type="gradleReference" />
 
     	<hook src="hooks/android_copy_video.js" type="before_plugin_install" />
-		<!-- <hook src="hooks/change_cordova_android_splash_background_color.js" type="after_plugin_install" /> -->
-	<!--	<hook src="hooks/android_change_fadeout_duration.js" type="after_plugin_install" /> -->
 		<hook src="hooks/android_change_app_id_dependency.js" type="after_plugin_install" />
 		<hook src="hooks/android_change_MainActivity.js" type="after_plugin_install" />
-		<!-- <hook src="hooks/change_splash_screen_color_after_plugin_install.js" type="after_prepare" /> -->
 		<hook src="hooks/android_add_color.js" type="after_plugin_install" />
 		<hook src="hooks/android_modify_app_theme.js" type="after_plugin_install" />
 
