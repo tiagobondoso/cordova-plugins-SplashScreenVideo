@@ -42,7 +42,7 @@
     	<resource-file src="src/android/res/anim/no_anim.xml" target="res/anim/no_anim.xml" />
     	<resource-file src="src/android/res/layout/activity_splash_screen_video.xml" target="res/layout/activity_splash_screen_video.xml" />
     	<resource-file src="src/android/res/values/styles.xml" target="res/values/styles.xml" />
-    	<source-file src="src/android/CDVSplashScreenVideo.java" target-dir="src/com/cordova/plugin/splashscreenvideo" />
+    	<source-file src="src/android/VideoDialogFragment.java" target-dir="src/com/cordova/plugin/splashscreenvideo" />
 		<framework src="src/android/splashvideo.gradle" custom="true" type="gradleReference" />
 
     	<hook src="hooks/android_copy_video.js" type="before_plugin_install" />
