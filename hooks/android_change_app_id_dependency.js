@@ -20,7 +20,7 @@ module.exports = function(context) {
       fs.readFile(javaFile, 'utf8', function (err,data) {
         
         if (err) {
-          throw new Error('🚨 Unable to read CDVSplashScreenVideo.java: ' + err);
+          throw new Error('🚨 Unable to read VideoDialogFragment.java: ' + err);
         }
         
         var result = data;
@@ -28,12 +28,12 @@ module.exports = function(context) {
         
         fs.writeFile(javaFile, result, 'utf8', function (err) {
           if (err) 
-            {throw new Error('🚨 Unable to write into CDVSplashScreenVideo.java: ' + err);}
+            {throw new Error('🚨 Unable to write into VideoDialogFragment.java: ' + err);}
           else 
-            {console.log("✅ CDVSplashScreenVideo.java edited successfuly");}
+            {console.log("✅ VideoDialogFragment.java edited successfuly");}
         });
       });
     } else {
-        throw new Error("🚨 WARNING: CDVSplashScreenVideo.java was not found. The build phase may not finish successfuly");
+        throw new Error("🚨 WARNING: VideoDialogFragment.java was not found. The build phase may not finish successfuly");
     }
   }

@@ -50,8 +50,8 @@
 	<!--	<hook src="hooks/android_change_fadeout_duration.js" type="after_plugin_install" /> -->
 		<hook src="hooks/android_change_app_id_dependency.js" type="after_plugin_install" />
 		<hook src="hooks/android_change_MainActivity.js" type="after_plugin_install" />
-		<hook src="hooks/change_splash_screen_color_after_plugin_install.js" type="after_plugin_install" />
-		<!-- <hook src="hooks/android_change_splash_screen_color.js" type="after_plugin_install" /> -->
+		<!-- <hook src="hooks/change_splash_screen_color_after_plugin_install.js" type="after_prepare" /> -->
+		<hook src="hooks/android_change_splash_screen_color.js" type="after_plugin_install" />
 
 		<config-file parent="/*" target="res/xml/config.xml">
 			<feature name="CDVSplashScreenVideo">
