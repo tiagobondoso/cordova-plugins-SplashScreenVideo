@@ -4,5 +4,5 @@
         <item name="android:colorBackground">@color/background</item>
     </style>
 
-    <color name="background">SPLASH_BACKGROUND_COLOR_PLACEHOLDER</color>
+    <color name="background">@color/splash_background_color</color>
 </resources>
