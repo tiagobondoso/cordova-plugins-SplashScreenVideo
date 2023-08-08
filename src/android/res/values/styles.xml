@@ -2,6 +2,7 @@
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
         <item name="android:windowBackground">@color/background</item>
         <item name="android:colorBackground">@color/background</item>
+        <item name="windowSplashScreenBackground">@color/splash_background_color</item>
     </style>
 
     <color name="background">@color/splash_background_color</color>
