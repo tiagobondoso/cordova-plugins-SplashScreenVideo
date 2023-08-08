@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const fs = require('fs');
 const path = require('path');
 const xml2js = require('xml2js');
@@ -37,14 +35,8 @@ function changeSplashScreenColor(data, newColor) {
   }
 }
 
-// Alterar o arquivo colors.xml com a nova cor de fundo
-parseXmlFile(colorsXmlPath, function (err, data) {
-  if (err) {
-    console.error('Error parsing colors.xml:', err);
-    return;
-  }
-
-    const args = process.argv
+module.exports = function(context) {
+    const args = context.cmdLine.split(' ');
     var hexColor;
     
     for (const arg of args) {  
@@ -54,15 +46,28 @@ parseXmlFile(colorsXmlPath, function (err, data) {
         }
     }
 
-   console.log(`✅ New hex color :: '${hexColor}' in 'colors.xml'.`);
-
-  changeSplashScreenColor(data, hexColor);
-
-  buildXmlFile(colorsXmlPath, data, function (err) {
-    if (err) {
-      console.error('Error writing colors.xml:', err);
-      return;
+    if (!hexColor) {
+        console.error('SPLASH_BACKGROUND_COLOR argument not found.');
+        return;
     }
-    console.log(`Splash screen background color has been changed to '${hexColor}' in 'colors.xml'.`);
-  });
-});
+
+    console.log(`✅ New hex color :: '${hexColor}' in 'colors.xml'.`);
+
+    parseXmlFile(colorsXmlPath, function (err, data) {
+        if (err) {
+            console.error('Error parsing colors.xml:', err);
+            return;
+        }
+
+        changeSplashScreenColor(data, hexColor);
+
+        buildXmlFile(colorsXmlPath, data, function (err) {
+            if (err) {
+                console.error('Error writing colors.xml:', err);
+                return;
+            }
+            console.log(`Splash screen background color has been changed to '${hexColor}' in 'colors.xml'.`);
+            console.log(data);
+        });
+    });
+};

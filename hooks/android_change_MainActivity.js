@@ -32,8 +32,8 @@ module.exports = function(context) {
                 }
 
                 var result = data;
-                result = data.replace(/import org.apache.cordova.*;/g, "import org.apache.cordova.*;\nimport android.content.Intent;\nimport com.cordova.plugin.splashscreenvideo.CDVSplashScreenVideo;");
-                result = result.replace(/in config.xml/g, "in config.xml\n\tIntent intent = new Intent(this, CDVSplashScreenVideo.class);\n\tstartActivity(intent);");
+                result = data.replace(/import org.apache.cordova.*;/g, "import org.apache.cordova.*;\nimport com.cordova.plugin.splashscreenvideo.VideoDialogFragment;");
+                result = result.replace(/in config.xml/g, "in config.xml\n\t\tVideoDialogFragment videoDialogFragment = new VideoDialogFragment();\n\t\tvideoDialogFragment.show(getSupportFragmentManager(), \"VideoDialogFragment\");");
 
                 fs.writeFile(mainActivityPath, result, 'utf8', function(err) {
                     if (err) throw new Error('Unable to write into MainActivity.java: ' + err);

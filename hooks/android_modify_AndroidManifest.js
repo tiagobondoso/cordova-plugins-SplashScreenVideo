@@ -4,7 +4,6 @@ var builder = new xml2js.Builder();
 var parser = new xml2js.Parser();
 
 module.exports = function(context) {
-    console.log("⚠️  ELVIS IS IN THE BUILDING ⚠️");
     fs.readFile('./platforms/android/app/src/main/AndroidManifest.xml', function(err, data) {
         parser.parseString(data, function (err, result) {
             if (err) {

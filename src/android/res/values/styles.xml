@@ -1,8 +1,11 @@
 <resources>
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.SplashScreen.IconBackground">
         <item name="android:windowBackground">@color/background</item>
         <item name="android:colorBackground">@color/background</item>
+        <item name="windowSplashScreenBackground">@color/splash_background_color</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_cdv_splashscreen</item>
+        <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>
     </style>
 
-    <color name="background">SPLASH_BACKGROUND_COLOR_PLACEHOLDER</color>
+    <color name="background">@color/splash_background_color</color>
 </resources>
