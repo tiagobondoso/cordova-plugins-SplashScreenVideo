@@ -1,20 +1,27 @@
 package com.cordova.plugin.splashscreenvideo;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.VideoView;
 import androidx.appcompat.app.AppCompatActivity;
 import APP_ID_PLACEHOLDER.R;
 import APP_ID_PLACEHOLDER.MainActivity;
 import android.os.Build;
+import com.google.android.exoplayer2.ExoPlayer;
+import com.google.android.exoplayer2.MediaItem;
+import com.google.android.exoplayer2.Player;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.ui.AspectRatioFrameLayout;
+import com.google.android.exoplayer2.ui.PlayerView;
 
 public class CDVSplashScreenVideo extends AppCompatActivity {
 
-    FullScreenVideoView videoView;
+    private PlayerView playerView;
+    private SimpleExoPlayer player;
+    private String PATH_RESOURCE = "android.resource://";
+    private String DELIMITER = "/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,16 +31,37 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
 
         setContentView(R.layout.activity_splash_screen_video);
 
-        videoView = (FullScreenVideoView)findViewById(R.id.videoView);
+        playerView = findViewById(R.id.playerView);
+        playerView.setResizeMode(AspectRatioFrameLayout.RESIZE_MODE_FIXED_HEIGHT);
 
-        Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.splashscreen);
-        videoView.setVideoURI(video);
+        player = new SimpleExoPlayer.Builder(this).build();
+        playerView.setPlayer(player);
 
-        videoView.setOnCompletionListener(mp -> {
+        try {
+            MediaItem mediaItem = MediaItem.fromUri(PATH_RESOURCE + getPackageName() + DELIMITER + R.raw.splashscreen);
+            player.setMediaItem(mediaItem);
+
+            player.addListener(new Player.Listener() {
+                @Override
+                public void onPlaybackStateChanged(int state) {
+                    if (state == ExoPlayer.STATE_ENDED) {
+                        showMainActivity();
+                    }
+                }
+            });
+
+            player.prepare();
+            player.play();
+        } catch (Exception ex) {
+            // If video doesn't exist or something, then go though
             showMainActivity();
-        });
+        }
+    }
 
-        videoView.start();
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        player.release();
     }
 
     @Override
@@ -55,10 +83,9 @@ public class CDVSplashScreenVideo extends AppCompatActivity {
 
     private void showMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // Clear all activities on top of MainActivity
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out); // Apply fade transition
-        finish(); // Finish the CDVSplashScreenVideo activity
+        overridePendingTransition(android.R.anim.fade_in, R.anim.fade_out_splash);
+        finish();
     }
-
 }
