@@ -57,7 +57,8 @@ module.exports = function(context) {
             const configXml = fs.readFileSync(configXmlPath, "utf8");
 
             // Find the plugin section and extract SPLASH_BACKGROUND_COLOR variable
-            const pluginMatch = configXml.match(/<plugin[^>]*name="com\.cordova\.plugin\.splashscreenvideo"[^>]*>[\s\S]*?<\/plugin>/i);
+            // Note: config.xml uses package name (CDVSplashScreenVideo), not plugin ID
+            const pluginMatch = configXml.match(/<plugin[^>]*name="CDVSplashScreenVideo"[^>]*>[\s\S]*?<\/plugin>/i);
             if (pluginMatch) {
                 const pluginSection = pluginMatch[0];
                 const colorMatch = pluginSection.match(/<variable\s+name="SPLASH_BACKGROUND_COLOR"\s+value="([^"]+)"/i);

@@ -26,7 +26,8 @@ module.exports = function(context) {
                 const configXml = fs.readFileSync(configXmlPath, "utf8");
 
                 // Find the plugin section and extract VIDEO_URL variable
-                const pluginMatch = configXml.match(/<plugin[^>]*name="com\.cordova\.plugin\.splashscreenvideo"[^>]*>[\s\S]*?<\/plugin>/i);
+                // Note: config.xml uses package name (CDVSplashScreenVideo), not plugin ID
+                const pluginMatch = configXml.match(/<plugin[^>]*name="CDVSplashScreenVideo"[^>]*>[\s\S]*?<\/plugin>/i);
                 if (pluginMatch) {
                     const pluginSection = pluginMatch[0];
                     const urlMatch = pluginSection.match(/<variable\s+name="VIDEO_URL"\s+value="([^"]+)"/i);
