@@ -11,15 +11,42 @@ module.exports = function(context) {
 
         // Find the URL parameter from the arguments
         var url = null;
-        for (const arg of args) {  
+        for (const arg of args) {
           if (arg.includes('VIDEO_URL')){
             var stringArray = arg.split("=");
             url = stringArray.slice(-1).pop();
           }
         }
 
+        // Fallback: Read from config.xml if not in command-line args
+        if (!url || url === "undefined" || url === "null") {
+            console.log("⚠️  VIDEO_URL not found in command-line args, reading from config.xml");
+            try {
+                const configXmlPath = path.join(context.opts.projectRoot, "config.xml");
+                const configXml = fs.readFileSync(configXmlPath, "utf8");
+
+                // Find the plugin section and extract VIDEO_URL variable
+                const pluginMatch = configXml.match(/<plugin[^>]*name="com\.cordova\.plugin\.splashscreenvideo"[^>]*>[\s\S]*?<\/plugin>/i);
+                if (pluginMatch) {
+                    const pluginSection = pluginMatch[0];
+                    const urlMatch = pluginSection.match(/<variable\s+name="VIDEO_URL"\s+value="([^"]+)"/i);
+                    if (urlMatch) {
+                        url = urlMatch[1];
+                        // Decode HTML entities
+                        url = url.replace(/&quot;/g, '"')
+                                 .replace(/&amp;/g, '&')
+                                 .replace(/&lt;/g, '<')
+                                 .replace(/&gt;/g, '>');
+                        console.log("✅ VIDEO_URL loaded from config.xml:", url);
+                    }
+                }
+            } catch (e) {
+                console.error("🚨 Failed to read VIDEO_URL from config.xml:", e.message);
+            }
+        }
+
         // If the URL parameter is found, download the file
-        if (url) {
+        if (url && url !== "undefined" && url !== "null") {
             console.log("⬇️ Downloading file from: ", url);
 
             var dest = path.join(context.opts.projectRoot,"plugins" ,"com.cordova.plugin.splashscreenvideo" ,"src" , "SplashScreen.mp4".toLowerCase());
