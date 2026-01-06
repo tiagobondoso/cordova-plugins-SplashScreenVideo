@@ -53,12 +53,52 @@ module.exports = function(context) {
         
         const args = process.argv
         var hexColor;
-        for (const arg of args) {  
+
+        // Try to read from process.argv first
+        for (const arg of args) {
           if (arg.includes('SPLASH_BACKGROUND_COLOR')){
             var stringArray = arg.split("=");
             hexColor = stringArray.slice(-1).pop();
           }
         }
+
+        // Fallback: Read from config.xml if not in command-line args
+        if (!hexColor || hexColor === "undefined" || hexColor === "null") {
+          console.log("⚠️  SPLASH_BACKGROUND_COLOR not found in command-line args, reading from config.xml");
+          try {
+            const configXmlPath = path.join(context.opts.projectRoot, "config.xml");
+            const configXml = fs.readFileSync(configXmlPath, "utf8");
+
+            // Find the plugin section and extract SPLASH_BACKGROUND_COLOR variable
+            const pluginMatch = configXml.match(/<plugin[^>]*name="com\.cordova\.plugin\.splashscreenvideo"[^>]*>[\s\S]*?<\/plugin>/i);
+            if (pluginMatch) {
+              const pluginSection = pluginMatch[0];
+              const colorMatch = pluginSection.match(/<variable\s+name="SPLASH_BACKGROUND_COLOR"\s+value="([^"]+)"/i);
+              if (colorMatch) {
+                hexColor = colorMatch[1];
+                // Decode HTML entities
+                hexColor = hexColor.replace(/&quot;/g, '"')
+                                   .replace(/&amp;/g, '&')
+                                   .replace(/&lt;/g, '<')
+                                   .replace(/&gt;/g, '>');
+                console.log("✅ SPLASH_BACKGROUND_COLOR loaded from config.xml:", hexColor);
+              } else {
+                console.error("🚨 SPLASH_BACKGROUND_COLOR variable not found in plugin section");
+              }
+            } else {
+              console.error("🚨 Plugin section not found in config.xml");
+            }
+          } catch (e) {
+            console.error("🚨 Failed to read SPLASH_BACKGROUND_COLOR from config.xml:", e.message);
+          }
+        }
+
+        // Validate that we have a color value
+        if (!hexColor || hexColor === "undefined" || hexColor === "null") {
+          throw new Error("🚨 SPLASH_BACKGROUND_COLOR is required but not provided. Please configure it in the plugin settings.");
+        }
+
+        console.log("→ Using splash background color:", hexColor);
         let rgbColor = hexToDecimalRGB(hexColor);
 
         var result;

@@ -36,22 +36,52 @@ function changeSplashScreenColor(data, newColor) {
 }
 
 module.exports = function(context) {
-    const args = context.cmdLine.split(' ');
     var hexColor;
-    
-    for (const arg of args) {  
-        if (arg.includes('SPLASH_BACKGROUND_COLOR')){
-            var stringArray = arg.split("=");
-            hexColor = stringArray.slice(-1).pop();
+
+    // Try to read from command-line first
+    if (context.cmdLine) {
+        const args = context.cmdLine.split(' ');
+        for (const arg of args) {
+            if (arg.includes('SPLASH_BACKGROUND_COLOR')){
+                var stringArray = arg.split("=");
+                hexColor = stringArray.slice(-1).pop();
+            }
         }
     }
 
-    if (!hexColor) {
-        console.error('SPLASH_BACKGROUND_COLOR argument not found.');
+    // Fallback: Read from config.xml if not in command-line
+    if (!hexColor || hexColor === "undefined" || hexColor === "null") {
+        console.log("⚠️  SPLASH_BACKGROUND_COLOR not found in command-line, reading from config.xml");
+        try {
+            const configXmlPath = path.join(context.opts.projectRoot, "config.xml");
+            const configXml = fs.readFileSync(configXmlPath, "utf8");
+
+            // Find the plugin section and extract SPLASH_BACKGROUND_COLOR variable
+            const pluginMatch = configXml.match(/<plugin[^>]*name="com\.cordova\.plugin\.splashscreenvideo"[^>]*>[\s\S]*?<\/plugin>/i);
+            if (pluginMatch) {
+                const pluginSection = pluginMatch[0];
+                const colorMatch = pluginSection.match(/<variable\s+name="SPLASH_BACKGROUND_COLOR"\s+value="([^"]+)"/i);
+                if (colorMatch) {
+                    hexColor = colorMatch[1];
+                    // Decode HTML entities
+                    hexColor = hexColor.replace(/&quot;/g, '"')
+                                       .replace(/&amp;/g, '&')
+                                       .replace(/&lt;/g, '<')
+                                       .replace(/&gt;/g, '>');
+                    console.log("✅ SPLASH_BACKGROUND_COLOR loaded from config.xml:", hexColor);
+                }
+            }
+        } catch (e) {
+            console.error("🚨 Failed to read SPLASH_BACKGROUND_COLOR from config.xml:", e.message);
+        }
+    }
+
+    if (!hexColor || hexColor === "undefined" || hexColor === "null") {
+        console.error('🚨 SPLASH_BACKGROUND_COLOR is required but not provided');
         return;
     }
 
-    console.log(`✅ New hex color :: '${hexColor}' in 'colors.xml'.`);
+    console.log(`→ Using splash background color: '${hexColor}' in 'colors.xml'.`);
 
     parseXmlFile(colorsXmlPath, function (err, data) {
         if (err) {
