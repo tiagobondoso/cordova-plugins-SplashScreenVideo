@@ -1,9 +1,9 @@
 {
-  "name": "com-outsystems-AlviereCaptureCheck",
+  "name": "CDVSplashScreenVideo",
   "version": "1.0.0",
   "description": "",
   "cordova": {
-    "id": "com-outsystems-AlviereCaptureCheck",
+    "id": "com.cordova.plugin.splashscreenvideo",
     "platforms": []
   },
   "keywords": [
