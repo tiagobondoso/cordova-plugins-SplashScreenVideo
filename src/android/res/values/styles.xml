@@ -1,11 +1,11 @@
 <resources>
-    <style name="AppTheme" parent="Theme.SplashScreen.IconBackground">
-        <item name="android:windowBackground">@color/background</item>
-        <item name="android:colorBackground">@color/background</item>
+    <!-- Tema específico apenas para o splash de vídeo -->
+    <style name="SplashVideoTheme" parent="Theme.SplashScreen.IconBackground">
+        <!-- Fundo do ecrã de splash -->
         <item name="windowSplashScreenBackground">@color/splash_background_color</item>
+        <!-- Ícone/animacao do splash (mantemos o drawable do Cordova) -->
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_cdv_splashscreen</item>
+        <!-- Após o splash, voltar para o tema padrão da app -->
         <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>
     </style>
-
-    <color name="background">@color/splash_background_color</color>
 </resources>
