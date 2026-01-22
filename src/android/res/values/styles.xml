@@ -3,9 +3,8 @@
     <style name="SplashVideoTheme" parent="Theme.SplashScreen.IconBackground">
         <!-- Fundo do ecrã de splash -->
         <item name="windowSplashScreenBackground">@color/splash_background_color</item>
-        <!-- Ícone/animacao do splash (mantemos o drawable do Cordova) -->
+        <!-- Ícone/animação do splash (mantemos o drawable do Cordova) -->
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_cdv_splashscreen</item>
-        <!-- Após o splash, voltar para o tema padrão da app -->
-        <item name="postSplashScreenTheme">@style/Theme.AppCompat.NoActionBar</item>
+        <!-- Não forçamos postSplashScreenTheme; deixamos a app usar o tema dela -->
     </style>
 </resources>
