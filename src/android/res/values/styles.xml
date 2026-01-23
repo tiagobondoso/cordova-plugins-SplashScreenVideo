@@ -1,10 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Tema específico apenas para o splash de vídeo -->
-    <style name="SplashVideoTheme" parent="Theme.SplashScreen.IconBackground">
-        <!-- Fundo do ecrã de splash -->
-        <item name="windowSplashScreenBackground">@color/splash_background_color</item>
-        <!-- Ícone/animação do splash (mantemos o drawable do Cordova) -->
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_cdv_splashscreen</item>
-        <!-- Não forçamos postSplashScreenTheme; deixamos a app usar o tema dela -->
-    </style>
+    <!-- Intencionalmente vazio: não introduzimos temas/estilos Android neste plugin.
+         O tema da app continua totalmente a cargo do projeto OutSystems/Cordova. -->
 </resources>
